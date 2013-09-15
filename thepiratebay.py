@@ -45,10 +45,10 @@ def search_torrents(query, page=0, sort_by=SORTBY_SEEDERS, category=CAT_NONE,
         title = links[0].string
         # The second <a>'s href is the magnet link.
         magnet = links[1]['href']
-        # The third <a>'s href is the uploader.
-        uploader = links[2]['href'].split('/')[-1]
-        # Uploader attrs is the image inside the third <a>.
-        uploader_attrs = [links[2].img['title']]
+        # The second-last <a>'s href is the uploader.
+        uploader = links[-2]['href'].split('/')[-1]
+        # Uploader attrs is the image inside the second-last <a>.
+        uploader_attrs = [links[-2].img['title']]
         # The next <td>'s string is the number of seeders.
         seeders = search_result_tds[1].string
         # The next <td>'s string is the number of leechers.
