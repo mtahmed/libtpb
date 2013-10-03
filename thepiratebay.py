@@ -48,7 +48,11 @@ def search_torrents(query, page=0, sort_by=SORTBY_SEEDERS, category=CAT_NONE,
         # The second-last <a>'s href is the uploader.
         uploader = links[-2]['href'].split('/')[-1]
         # Uploader attrs is the image inside the second-last <a>.
-        uploader_attrs = [links[-2].img['title']]
+        # NOTE: Sometimes, the uploader_attrs isn't available.
+        try:
+            uploader_attrs = [links[-2].img['title']]
+        except:
+            uploader_attrs = None
         # The next <td>'s string is the number of seeders.
         seeders = search_result_tds[1].string
         # The next <td>'s string is the number of leechers.
