@@ -30,10 +30,15 @@ def search_torrents(query, page=0, sort_by=SORTBY_SEEDERS, category=CAT_NONE,
                        str(sort_by) + '/' +
                        str(category))
 
-    soup = BeautifulSoup(doc_file.read())
-    search_results = soup.select('#searchResult')[0]
-
     torrents = []
+
+    soup = BeautifulSoup(doc_file.read())
+    search_results = soup.select('#searchResult')
+    if search_results:
+        search_results = soup.select('#searchResult')[0]
+    else:
+        return torrents
+
     for search_result in search_results.find_all('tr'):
         # If the tr has a class attribute, then it's a theader and skip over it.
         if search_result.attrs:
