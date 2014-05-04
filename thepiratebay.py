@@ -1,7 +1,9 @@
 # Standard imports
+from bs4 import BeautifulSoup
+from gzip import GzipFile
+from io import BytesIO
 from urllib.parse import quote
 from urllib.request import urlopen
-from bs4 import BeautifulSoup
 
 
 SORTBY_RELEVANCE = 99
@@ -24,11 +26,13 @@ def search_torrents(query, page=0, sort_by=SORTBY_SEEDERS, category=CAT_NONE,
                     required_results=10):
     torrent_url = 'http://thepiratebay.org/search/'
     quoted_query = quote(query)
-    doc_file = urlopen(torrent_url +
-                       quoted_query + '/' +
-                       str(page) + '/' +
-                       str(sort_by) + '/' +
-                       str(category))
+    url = (torrent_url +
+           quoted_query + '/' +
+           str(page) + '/' +
+           str(sort_by) + '/' +
+           str(category))
+    doc_file_sio = BytesIO(urlopen(url).read())
+    doc_file = GzipFile(fileobj=doc_file_sio, mode='rb')
 
     torrents = []
 
