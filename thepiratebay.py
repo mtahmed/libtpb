@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from gzip import GzipFile
 from io import BytesIO
 from urllib.parse import quote
-from urllib.request import urlopen
+from urllib.request import urlopen, build_opener
 
 
 SORTBY_RELEVANCE = 99
@@ -31,7 +31,10 @@ def search_torrents(query, page=0, sort_by=SORTBY_SEEDERS, category=CAT_NONE,
            str(page) + '/' +
            str(sort_by) + '/' +
            str(category))
-    doc_file_sio = BytesIO(urlopen(url).read())
+    opener = build_opener()
+    opener.addheaders = [('Accept-Encoding', 'gzip')]
+    url_sock = opener.open(url)
+    doc_file_sio = BytesIO(url_sock.read())
     doc_file = GzipFile(fileobj=doc_file_sio, mode='rb')
 
     torrents = []
